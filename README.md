@@ -1,7 +1,7 @@
 # Notifier Setup manual
 
-[Official documentation Notifier](https://github.com/industrial-edge/notifier-getting-started)
-[Official documentation Notifier External Comminications OpenApi](https://github.com/industrial-edge/notifier-api)
+- [Official documentation Notifier](https://github.com/industrial-edge/notifier-getting-started)
+- [Official documentation Notifier External Comminications OpenApi](https://github.com/industrial-edge/notifier-api)
 
 ## Index
 * [Overview](#overview)
@@ -60,6 +60,7 @@ Install the required apps on edge device
 - IE Databus 
 - Notifier
 - flow creator
+- Dataservice
  
 Setup the network settings  on edge device
   - Give the Edge-Device Port 2 ip adress in range of the OT-South network, for example 192.168.0.11
@@ -88,20 +89,37 @@ Setup the network settings  on edge device
 5. Deploy, wait until its done
 
 ## Flow Creator
-1. open flow creator - on edge device, login with edge credentials 
-2. add mqtt in node
-3. add server: 
+1. Open flow creator - on edge device, login with edge credentials 
+2. Add mqtt in node
+3. Add server: 
     - server: ie-databus
     - port: 1883
     - security - user: edge
     - security - password: edge
     - click on save
-    - ![flowcreator1](files/edgedevice-flow-creator-1.JPG)
+    - ![flowcreator1](files/edgedevice-flow-creator-2.JPG)
 4. set topic:
     - ie/#
     - click on done.
-5. add message node and connect, then deploy.
+5. Add message node and connect, then deploy.
 6. check if data is flowing in debug window.
-![flowcreator2](files/edgedevice-flow-creator-2.JPG)
+![flowcreator2](files/edgedevice-flow-creator-1.JPG)
+
+## Dataservice
+1. Open the dataservice - on edge device.
+2. Create a child asset in hierarchie for example "TankApplication".
+3. We use this asset on notifier.
+4. Add the variable "GDB.signals.energySignals.energyConsumptionFillingBottles" to the asset.
 
 ## Notifier
+1. Open Notifier - on edge device.
+2. Go to Settings > Manage Notification rules.
+3. Create Notification rule. 
+  - type: warning
+  - Text: Energy consumption of filling bottles is too high
+  - location : "TankApplication"
+  - Tag: GDB.signals.energySignals.energyConsumptionFillingBottles
+![notifier](files/edgedevice-notifier.JPG)
+
+4. Save
+5. wait, for alert to fire. if not, make sure your tia tank application is running with the HMI start button :)
